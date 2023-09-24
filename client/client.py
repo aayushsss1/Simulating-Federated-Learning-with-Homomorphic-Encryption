@@ -8,7 +8,7 @@ import utils
 import matplotlib.pyplot as plt
 import tenseal as ts
 import pandas as pd
-from client.localmodel import LogisticRegression,scale_dataset
+from localmodel import LogisticRegression, scale_dataset
 
 class Client:
     def __init__(self, name, data_url, enc_file, n_features, iters):

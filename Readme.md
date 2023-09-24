@@ -80,6 +80,13 @@ flask --app server/server.py run
 
 A Simple Logistic Regression model was used on the Breast Cancer Classification Dataset.
 
+
+## Improvements
+
+- User Interface
+- More Sophisticated Model and Dataset
+- Hyperparameter Tuning
+
 ## References
 
 - TenSeal - https://github.com/OpenMined/TenSEAL
