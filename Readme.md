@@ -62,7 +62,7 @@ flask --app server/server.py run
   <img src="images/localtraining.png" width="420" /> 
 </p>
 
-#### Server - Registered Clients will be Displayed & Perform Federated Learning on Click of a button
+#### Server - Registered Clients will be displayed, upload the Public Key & perform Federated Learning on click of a button
 
 
 <p float="center">

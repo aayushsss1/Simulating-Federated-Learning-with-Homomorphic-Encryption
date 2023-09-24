@@ -8,7 +8,7 @@ import utils
 import matplotlib.pyplot as plt
 import tenseal as ts
 import pandas as pd
-from localmodel import LogisticRegression,scale_dataset
+from client.localmodel import LogisticRegression,scale_dataset
 
 class Client:
     def __init__(self, name, data_url, enc_file, n_features, iters):
@@ -91,37 +91,3 @@ class Client:
         context = ts.context_from(utils.read_data("keys/secret.txt"))
         encrypt_weights = ts.ckks_vector(context, model_params)
         utils.write_data(self.enc_file, encrypt_weights.serialize())
-
-    def decrypted_model(self):
-        context = ts.context_from(utils.read_data("keys/secret.txt"))
-        encrypted_proto = utils.read_data("outputs/final_params.txt")
-        encrypted_value = ts.lazy_ckks_vector_from(encrypted_proto)
-        encrypted_value.link_context(context)
-        federated_model_params = encrypted_value.decrypt()
-        # convert float to tensor context
-        W = Variable(torch.tensor([federated_model_params[:-1]], dtype = torch.float32))
-        B = Variable(torch.tensor( federated_model_params[-1], dtype = torch.float32))
-        self.local_model.linear.weight = nn.Parameter(W)
-        self.local_model.linear.bias   = nn.Parameter(B)
-    
-    def plot_graphs(self, diagnosis_title = 'Breast cancer'):
-        plt.plot(self.losses)
-        plt.title(f"{diagnosis_title} - Training Loss")
-        plt.xlabel("Iterations")
-        plt.ylabel("Training Loss")
-        plt.show()
-        plt.plot(self.accuracies)
-        plt.title(f"{diagnosis_title} - Training Accuracy")
-        plt.xlabel("Iterations")
-        plt.ylabel("Training Accuracy (Percent %)")
-        plt.show()
-    
-    def print_result_after_training(self):
-        print('Model parameters:')
-        print('  | Weights: %s' % self.local_model.linear.weight)
-        print('  | Bias: %s' % self.local_model.linear.bias)
-        self.plot_graphs()
-    
-    def evaluating_model(self):
-        test_acc = self.compute_accuracy(self.X_test, self.Y_test)
-        print('[+] Testing Accuracy = {}'.format(self.to_percent(test_acc)))
